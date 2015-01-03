@@ -93,25 +93,21 @@ class GameOfLife(PygameHelper):
     def update(self):
         if self.paused: return
 
-        born = []
-        killed = []
+        changed = []
         for c in self.cells:
             neighbours = self.neighbours(c)
             liveneighbours = [n for n in neighbours if n.alive]
 
             if c.alive:
                 if len(liveneighbours) >= 4 or len(liveneighbours) <= 1:
-                    killed.append(c)
+                    changed.append(c)
 
             if not c.alive:
                 if len(liveneighbours) == 3:
-                    born.append(c)
+                    changed.append(c)
 
-        for c in killed:
-            c.alive = False
-
-        for c in born:
-            c.alive = True
+        for c in changed:
+            c.alive = not c.alive
 
     def draw(self):
         self.screen.fill((0, 0, 0))
