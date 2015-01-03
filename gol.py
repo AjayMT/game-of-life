@@ -44,6 +44,10 @@ class GameOfLife(PygameHelper):
         self.w, self.h = 800, 600
         PygameHelper.__init__(self, size=(self.w, self.h))
 
+        self.begin = raw_input('Begin: ') or [3]
+        self.begin = [int(x) for x in self.begin]
+        self.stay = raw_input('Stay: ') or [3, 2]
+        self.stay = [int(x) for x in self.stay]
         self.paused = True
         self.cellw = input('Cell width: ')
         self.cells = Matrix(self.w / self.cellw, self.h / self.cellw)
@@ -99,11 +103,11 @@ class GameOfLife(PygameHelper):
             liveneighbours = [n for n in neighbours if n.alive]
 
             if c.alive:
-                if len(liveneighbours) >= 4 or len(liveneighbours) <= 1:
+                if len(liveneighbours) not in self.stay:
                     changed.append(c)
 
             if not c.alive:
-                if len(liveneighbours) == 3:
+                if len(liveneighbours) in self.begin:
                     changed.append(c)
 
         for c in changed:
